@@ -46,7 +46,7 @@ def contact():
       plex.myPlexAccount().updateFriend(user=form.plexuser.data, server=plex_server_var, sections='')
       
       # email confirmation to server owner
-      msg = Message(Plex user form.plex.user invted, sender='contact@example.com', recipients=['your_email@example.com'])
+      msg = Message(Plex user form.plexuser.data invted, sender='contact@example.com', recipients=['your_email@example.com'])
       msg.body = """
       From: %s <%s>
       %s
