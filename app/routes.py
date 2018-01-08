@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, flash
 from forms import ContactForm
 from flask.ext.mail import Message, Mail
+from plexapi.server import PlexServer
 
 mail = Mail()
 
@@ -14,6 +15,12 @@ app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = 'contact@example.com'
 app.config["MAIL_PASSWORD"] = 'your-password'
+
+PLEX_URL = 'http://plex.themetabay.org:32400'
+PLEX_TOKEN = app.secret_key
+plex_server_var = PlexServer(PLEX_URL, PLEX_TOKEN)
+
+
 
 mail.init_app(app)
 
@@ -34,7 +41,12 @@ def contact():
       flash('All fields are required.')
       return render_template('invite.html', form=form)
     else:
-      msg = Message(form.subject.data, sender='contact@example.com', recipients=['your_email@example.com'])
+      
+      # actual Plex invite
+      plex.myPlexAccount().updateFriend(user=form.plexuser.data, server=plex_server_var, sections='')
+      
+      # email confirmation to server owner
+      msg = Message(Plex user form.plex.user invted, sender='contact@example.com', recipients=['your_email@example.com'])
       msg.body = """
       From: %s <%s>
       %s
